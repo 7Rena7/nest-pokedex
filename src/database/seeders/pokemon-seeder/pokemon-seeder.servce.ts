@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { PokeApiFetchAdapter } from 'src/common/helpers/pokeapi.adapter';
+import { PokeApiFetchAdapter } from 'src/common/helpers/adapters/pokeapi.adapter';
 import { PokeAPIResponse } from 'src/models/pokeapi/interfaces/pokeapi-response.interface';
 import { Pokemon } from 'src/pokemon/entities/pokemon.entity';
 
 @Injectable()
-export class SeedService {
+export class PokemonSeedService {
   constructor(
-    private pokeApi: PokeApiFetchAdapter,
+    private readonly pokeApi: PokeApiFetchAdapter,
     @InjectModel(Pokemon.name)
     private readonly pokemonModel: Model<Pokemon>,
   ) {}

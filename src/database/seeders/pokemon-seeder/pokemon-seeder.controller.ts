@@ -1,10 +1,10 @@
 import { Controller, Post, Query } from '@nestjs/common';
-import { SeedService } from './seed.service';
 import { ParseSeedAmountPipe } from 'src/common/pipes/parse-seed-amount/parse-seed-amount.pipe';
+import { PokemonSeedService } from './pokemon-seeder.servce';
 
 @Controller('seed')
-export class SeedController {
-  constructor(private readonly seedService: SeedService) {}
+export class PokemonSeedController {
+  constructor(private readonly seedService: PokemonSeedService) {}
 
   @Post()
   populateDatabase(@Query('amount', ParseSeedAmountPipe) amount: number) {

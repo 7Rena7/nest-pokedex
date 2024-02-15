@@ -9,7 +9,8 @@ import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pokemon } from './entities/pokemon.entity';
 import { Model, isValidObjectId } from 'mongoose';
-import { MongoErrors } from 'src/enums/errors';
+import { MongoErrors } from 'src/common/enums/errors';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class PokemonService {
@@ -28,9 +29,36 @@ export class PokemonService {
     }
   }
 
-  async findAll() {
+  async findAll(paginationDto: PaginationDto) {
     try {
-      return await this.pokemonModel.find();
+      const { limit = 10, offset = 0 } = paginationDto;
+
+      const promiseArr = [
+        this.pokemonModel.countDocuments(),
+        this.pokemonModel
+          .find()
+          .skip(offset)
+          .limit(limit)
+          .sort({ no: 1 })
+          .select('-__v'),
+      ];
+
+      const [count, data] = await Promise.all(promiseArr);
+
+      const BASE_URL = 'http://localhost:3000/api/v2/pokemon';
+
+      const next = `${BASE_URL}?limit=${limit}&offset=${offset + limit}`;
+      const previous =
+        offset - limit >= 0
+          ? `${BASE_URL}?limit=${limit}&offset=${offset - limit}`
+          : null;
+
+      return {
+        count,
+        next,
+        previous,
+        data,
+      };
     } catch (error) {
       this.handleException(error);
     }
