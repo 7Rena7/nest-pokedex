@@ -23,6 +23,14 @@ $ npm install -g @nestjs/cli
 $ docker-compose up -d
 ```
 
+5. Run seed
+
+```bash
+$ cURL -X POST http://localhost:3000/api/v2/seed?amount=600
+```
+
+#### NOTE: amount is the number of pokemons to be created. It's optional and the default value is 100.
+
 ## Running the app
 
 ```bash
