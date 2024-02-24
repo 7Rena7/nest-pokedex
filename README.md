@@ -45,28 +45,18 @@ $ cURL -X POST http://localhost:3000/api/v2/seed?amount=600
 
 #### NOTE: amount is the number of pokemons to be created. It's optional and the default value is 100.
 
-<!-- ## Running the app
+# Production Build
+
+1. Create **.env.prod** file
+2. Set environment variables in **.env.prod** file.
+3. Run the following command to create the production image.
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+docker-compose -f docker-compose.prod.yml --env-file .env.prod up --build
 ```
 
-## Test
+#### NOTE: If you delete the containers and want to recreate them without building the image again, you can run the following command.
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-``` -->
+docker-compose -f docker-compose.prod.yml --env-file .env.prod up -d
+```
